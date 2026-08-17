@@ -1,0 +1,24 @@
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+import joblib
+
+# Load dataset (replace with your own CSV file of 100+ headlines)
+data = pd.read_csv("news.csv")  # must have 'text' and 'label' columns
+
+X = data['text']
+y = data['label']
+
+# Convert text to TF-IDF features
+vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
+X_vec = vectorizer.fit_transform(X)
+
+# Train Logistic Regression model
+model = LogisticRegression()
+model.fit(X_vec, y)
+
+# Save model and vectorizer
+joblib.dump(model, "fake_news_model.pkl")
+joblib.dump(vectorizer, "vectorizer.pkl")
+
+print("✅ Model and vectorizer saved successfully!")
